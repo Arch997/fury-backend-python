@@ -1,0 +1,20 @@
+{% extends 'planner/base.html' %}
+
+{% block title %}
+   Events
+{% endblock %}
+
+{% block main %}
+   <ul>
+    {% for event in events %}
+    <li>
+       {{ event }}
+    </li>
+    {% empty %}
+       No events have been added yet. <a href="{% url 'planner:add' event.id %}"> Add</a> an event
+    {% endfor %}
+   </ul>
+   <footer class="medium text-center text-muted">
+    <a href="{% url 'planner:add'%}">Add New Event</a>
+  </footer>
+{% endblock %}

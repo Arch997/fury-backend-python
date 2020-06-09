@@ -1,0 +1,18 @@
+
+{% extends 'planner/base.html' %}
+
+{% block header %}
+    <div class='jumbotron'>
+    	<h2>Plan Your Work</h2>
+    </div>
+{% endblock %}
+
+{% block main %}
+    {% if user.is_authenticated %}
+        <h1>Welcome to the planner board</h1>
+    {% else %}
+    <h2>Register<a href="{% url 'users:register' %}"> here</a> with your Slack username to join the plan</h2>
+    <h2>If you have an account. Login <a href="{% url 'users:login' %}">here</a></h2>
+    {% endif %}
+
+{% endblock %}

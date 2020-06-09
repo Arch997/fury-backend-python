@@ -1,0 +1,36 @@
+{% extends 'planner/base.html' %}
+{% load bootstrap4 %}
+{% bootstrap_messages %}
+
+{% block title %}
+	Register
+{% endblock %}
+
+{% block header %}
+	<div class="container">
+		<div class="jumbotron">
+			<h1 class="display-4">
+				Sign up for Fury Corp's Event Planner!
+			</h1>
+			<p class="lead">
+				Don't forget what you planned last week. 
+			</p>
+			<hr class="my-4">
+			<p>Track your events.</p>
+			<a class="btn btn-primary btn-lg" id="register_form" href="#register" role="button">
+				Try it out!
+			</a>
+		</div>
+	</div>
+{% endblock %}
+
+{% block main %}
+	<form enctype="multipart/form-data" method="post" action="{% url 'users:register' %}" class="form" id="register">
+		{% csrf_token %}
+		{% bootstrap_form user_form %}
+		{% bootstrap_form profile_form %}
+		{% buttons %}
+		<button type="submit" class="btn btn-primary">Register</button>
+		{% endbuttons %}
+	</form>
+{% endblock %}
