@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 
-from users.models import Employee, Todo, Event
+from users.models import Employee, Event
 
 
 class TodoForm(forms.ModelForm):
@@ -14,22 +14,25 @@ class TodoForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        fields = ['title', 'desc']
+        fields = ['title', 'desc', 'category', 'due_date']
         labels = {'text': _('Todo'),
                   }
 
-        widgets = {'title': forms.Textarea(), 'desc': forms.Textarea()}
+        widgets = {'title': forms.TextInput(), 'desc': forms.Textarea(),
+        'category': forms.Select()}
         help_texts = {'text': _('Your todo title'),
-                      'desc': _('A description of your todo item')
+                      'desc': _('A description of your event item'),
+                      'category': _('What category does this event belong to'),
+                      'due_date': _("Time of Event"),
                       }
         error_messages = {
-            'text': {
+            'title': {
                 'max_length': _('Title cannot be empty'),
                 },
             }
 
 
-class UserForm(forms.ModelForm):
+class SignUpForm(forms.ModelForm):
     """Custom form for login and registration implementation."""
 
     password = forms.CharField(widget=forms.PasswordInput())
@@ -37,18 +40,12 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ('first_name', 'last_name', 'username', 'password', 'email')
+        fields = ('username', 'password', 'email')
 
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = Employee
-        fields = ('department', 'position')
+        fields = ('first_name', 'last_name', 'department', 'position')
     
 
-
-'''class CategoryForm(forms.ModelForm):
-    class Meta:
-        model = Category     
-        CHOICES = (('work', 'Work'), ('personal', 'Personal'))
-        field = forms.ChoiceField(choices=CHOICES)'''

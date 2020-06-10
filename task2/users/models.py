@@ -24,8 +24,10 @@ class Company(models.Model):
 class Employee(models.Model):
     """Model representing an employee."""
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    department = models.CharField(max_length=200)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50, null=True)
+    last_name = models.CharField(max_length=100, null=True)
+    department = models.CharField(max_length=200, null=True)
     position = models.CharField(max_length=200)
     # company = models.ForeignKey(Company, on_delete=models.CASCADE)
     todos = models.ManyToManyField(Event)
@@ -39,7 +41,7 @@ class Employee(models.Model):
         return self.user
 
 
-class Todo(models.Model):
+'''class Todo(models.Model):
 	"""Represent the employee todo list."""
 	user = models.ForeignKey(Employee, on_delete=models.CASCADE)
 	category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -47,5 +49,6 @@ class Todo(models.Model):
 
 	class Meta:
 		verbose_name = "To-do List"
+		'''
 
 

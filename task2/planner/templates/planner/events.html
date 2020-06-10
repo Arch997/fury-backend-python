@@ -8,13 +8,15 @@
    <ul>
     {% for event in events %}
     <li>
+      <a href="{% url 'planner:event' event.id %}">
        {{ event }}
+      </a>
     </li>
     {% empty %}
-       No events have been added yet. <a href="{% url 'planner:add' event.id %}"> Add</a> an event
+       No events have been added yet. <a href="{% url 'planner:add_event' %}"> Add</a> an event
     {% endfor %}
    </ul>
    <footer class="medium text-center text-muted">
-    <a href="{% url 'planner:add'%}">Add New Event</a>
+    <a href="{% url 'planner:add_event' %}">Add New Event</a>
   </footer>
 {% endblock %}

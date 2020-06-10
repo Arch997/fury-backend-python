@@ -27,7 +27,7 @@
 {% block main %}
 	<form enctype="multipart/form-data" method="post" action="{% url 'users:register' %}" class="form" id="register">
 		{% csrf_token %}
-		{% bootstrap_form user_form %}
+		{% bootstrap_form form %}
 		{% bootstrap_form profile_form %}
 		{% buttons %}
 		<button type="submit" class="btn btn-primary">Register</button>

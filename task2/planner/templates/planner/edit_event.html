@@ -1,0 +1,22 @@
+{% extends "planner/base.html" %}
+{% load bootstrap4 %}
+
+{% block title %}
+	Edit Event
+{% endblock %}
+
+{% block header %}
+	<p>
+		<a href="{% url 'planner:event' event.id %}">{{ event }}</a>
+	</p>
+{% endblock %}
+
+{% block main %}
+	<form action="{% url 'planner:edit_event' event.id %}" method="post" class="form">
+			{% csrf_token %}
+			{% bootstrap_form form %}
+			{% buttons %}
+			<button class="btn btn-primary" name="submit">Save Changes</button>
+			{% endbuttons %}			
+	</form>
+{% endblock %}

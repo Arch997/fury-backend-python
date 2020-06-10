@@ -1,40 +1,25 @@
-{% extends 'planner/base.html' %} 
+
+{% extends "planner/base.html" %}
+{% load bootstrap4 %}
 
 {% block title %}
-   Add Event
+	New Event
 {% endblock %}
 
 {% block header %}
-	<div class="jumbotron">
-		<h3>
-			Add new Event
-		</h3>
-	</div>	
+	Add a new event
 {% endblock %}
 
-<div>
-	<p>
-		<a href="{% url 'planner:event' event.id %}">{{ event }}</a>
-	</p>
-</div>
 {% block main %}
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h3>New Event</h3>
-	</div>
-	<div class="panel-body">
-		<form action="{% url 'planner:add_event' event.id %}" method="post" class="form">
+	<form action="{% url 'planner:add_event' %}" method="post" class="form">
 		<div class="form-group">
-			{% csrf_token %}
-			{% bootstrap_form form %}
-			{% buttons}
-			<button class="btn btn-primary" name="submit">Add Event</button>
-			{% endbuttons %}
-			<input type="hidden" name="next" value="{% url 'planner:events' %}">
-		</div>			
-		</form>
-	</div>
-	
-</div>
+		  	{% csrf_token %}	
+		  	{% bootstrap_form form %}	 
+		  	{% buttons %}
+				<button class="btn btn-primary" name="submit">Add Event
+		  	{% endbuttons %}
+		        </button>	
+		</div>
+	</form>
 {% endblock %}
    

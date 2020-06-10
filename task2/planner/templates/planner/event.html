@@ -1,0 +1,58 @@
+{% extends 'planner/base.html' %}
+
+{% block title %}
+   {{ event.title }}
+
+{% endblock %}
+
+{% block main %}
+
+   <h1>{{ event }}</h1>
+   {% if descriptor %}
+   <div class="panel panel-default">
+		<div class="panel-body">
+			{{ descriptor | linebreaks }}
+		</div>
+	</div>
+	{% else %}
+	    <small>
+			There are no descriptors for this topic yet. Add one <a href"{% url 'planner:edit_event' event.id %}">here </a>
+		</small>
+    {% endif %}
+
+    <footer class="medium text-center text-muted">
+		<a href="{% url 'planner:edit_event' event.id %}">Edit Event</a>
+	</footer>
+
+	<!--Button Trigger Modal -->
+	<a  class='btn btn-primary' 
+	    data-toggle='modal' data-target='#confirmDeleteModal' href="{% url 'planner:delete_event' event.id %}"
+	     class='confirmDelete' data-toggle='modal' data-target='#confirmDeleteModal' id='#deleteButton{{ event.id }}'>
+	    Delete Event
+	</a>
+	<!--Modal -->
+	<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true"
+	    caller-id= >
+	    <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Delete?</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        Do you want to delete this event. This action is permanent
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		        <a type="button" class="btn btn-danger" id='#confirmDeleteModalButton' 
+		                href="{% url 'planner:delete_event' event.id %}">
+		                    Confirm Delete
+		        </a>
+		      </div>
+		    </div>
+        </div>
+    </div>
+
+{% endblock %}

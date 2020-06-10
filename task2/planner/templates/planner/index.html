@@ -11,8 +11,11 @@
     {% if user.is_authenticated %}
         <h1>Welcome to the planner board</h1>
     {% else %}
-    <h2>Register<a href="{% url 'users:register' %}"> here</a> with your Slack username to join the plan</h2>
-    <h2>If you have an account. Login <a href="{% url 'users:login' %}">here</a></h2>
+    <h2>Register<a href="{% url 'users:register' %}"> here</a> with your Slack username to join the plan.</h2>
+    <div>
+    	<h2>If you have an account <a href="{% url 'users:login' %}">login</a></h2>
+    </div>
+    
     {% endif %}
 
 {% endblock %}

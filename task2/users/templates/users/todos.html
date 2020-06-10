@@ -1,0 +1,21 @@
+{% extends 'planner:base.html' %}
+
+{% block title $}
+  To-do List
+{% endblock %}
+
+{% block header %}
+   <h1>Todo List></h1>
+{% endblock %}
+
+{% block main %}
+   <ul>
+    {% for todo in todos %}
+    <li>
+       {{ event }}
+    </li>
+    {% empty %}
+       No events have been added yet
+    {% endfor %}
+   </ul>
+{% endblock %}

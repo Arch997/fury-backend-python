@@ -6,14 +6,15 @@ from django.db import models
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.views.generic.edit import DeleteView
 
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from planner.models import Category, Event
-from users.models import Company, Employee, Todo
-from .forms import TodoForm, UserForm
+from users.models import Company, Employee
+from .forms import TodoForm, SignUpForm
 
 # Create your views here.
 
@@ -56,33 +57,32 @@ def events(request):
 @login_required
 def event(request, event_id):
     """Return a single event by id."""
-    try:
-        event = get_object_or_404(Event, id=event_id)
-    except EventDoesNotExist:
-        return Http404
-        if event:
-            desc = event.desc
-            return HttpResponseRedirect(reverse('planner:event', args=['event_id']))
-    context = {'event': event, 'desc': desc}
+    event = Event.objects.get(id=event_id)
+    descriptor = event.desc
+    context = {'event': event, 'descriptor': descriptor}
     return render(request, 'planner/event.html', context)
 
 
+@login_required
 @user_passes_test(lambda u: u.is_superuser)
-def add(request, event_id):
-    """Add a todo item."""
-    new_event = Event.objects.all()  # Represents the company event list
-    new_todo = Todo.objects.all()  # Represents the employee todo list
+def add(request):
+    """Add a todo item.
+
+    @user_passes_test decorator ensures only an administrator can add event.
+    """
+    # TODO: Update the Employee todo field with new events as appropriate. 
+    # Possibly check if the task scheduler API can interface with the /
+    # users.todo view to alert the user(Employee) to new events in their departments(category)
+
     if request.method == 'GET':
-        form = TodoForm
+        form = TodoForm()
     elif request.method == 'POST':
-        form = TodoForm(request.POST)
+        form = TodoForm(data=request.POST)
 
         if form.is_valid():
             new_event = form.save(commit=False)
-            new_todo = form.save(commit=False)
-            new_todo.user = request.user
             new_event.save()  # When an event is added by admin, the admin events board increments
-            new_todo.save()  # When an event is added by the admin, the employee's todo list increments
+            
             return HttpResponseRedirect(reverse('planner:events'))
         else:
             messages.add_message(request, messages.error,
@@ -92,28 +92,34 @@ def add(request, event_id):
 
 
 @login_required
-def todos(request):
-    """Show all open todos."""
-    todos = Todo.objects.filter(user=request.user).order_by('-time_added')
-    context = {'todos': todos}
-    return render(request, 'planner/todos.html', context)
+@user_passes_test(lambda u: u.is_superuser)
+def edit(request, event_id):
+    """Edit an event"""
+    event = Event.objects.get(id=event_id)
+    if request.method == 'GET':
+        """Pre-fill the form with the existing entry."""
+        form = TodoForm(instance=event)
+    elif request.method == "POST":
+        """ POST data submitted; process data."""
+        form = TodoForm(instance=event, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('planner:event', 
+                args=[event.id]))
+
+    context = {'form': form, 'event': event}
+    return render(request, 'planner/edit_event.html', context)
 
 
 @login_required
-def todo(request, todo_id):
-    """Show a single todo item."""
-    todo = get_object_or_404(Todo, id=todo_id)
-    if todo.owner == request.user:
-        return HttpResponseRedirect(reverse('planner:topic',
-                                            args=[todo_id]))
-    context = {'todo': todo}
-    return render(request, 'planner/todo.html', context)
-
-
-
-
-
-
-
-
-
+@user_passes_test(lambda u: u.is_superuser)
+def delete(request, event_id):
+    """Delete an event."""
+    event = Event.objects.get(id=event_id)
+    
+    event.delete()
+    messages.success(request, "Event deleted")
+    return HttpResponseRedirect(reverse('planner:events'))
+    
+    context = {'event': event}
+    return render(request, 'planner/delete_event.html', context)

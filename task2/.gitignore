@@ -1,2 +1,39 @@
+# Django #
+
 db.sqlite3
 manage.py
+*.log
+*.pyc
+__pycache__
+media
+.DS_Store
+
+# Backup files #
+*.bak
+
+# Distribution / packaging
+dist/
+lib/
+*.manifest
+*.spec
+
+# Unit test / coveerage reports
+.cache
+.pytest_cache/
+
+# pyenv
+.python-version
+
+# Environments
+.venv
+.env 
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+*.stTheme.cache

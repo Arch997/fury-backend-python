@@ -27,12 +27,12 @@ class Event(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     due_date = models.DateTimeField(auto_now_add=False)
     # sowner = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.OneToOneField(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = ('Event')
         verbose_name_plural = 'Events'
-        ordering = ['-created']  # Ordering by oldest event
+        ordering = ['created']  # Ordering by oldest event
 
     def __str__(self):
         """Set string representation of the object."""
